@@ -13,12 +13,18 @@ services:
       dockerfile: SubService/Dockerfile
     ports:
       - 9001:80
+  history-service:
+    build:
+      context: .
+      dockerfile: HistoryService/Dockerfile
+    ports:
+    - 9002:80
   frontend-service:
     build:
       context: .
       dockerfile: Frontend/Dockerfile
     ports:
-    - 9002:80
+    - 9003:80
   history-db:
     image: "mysql"
     environment:
