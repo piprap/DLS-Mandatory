@@ -15,22 +15,22 @@ public class AddController : ControllerBase
        
     }
 
-    [HttpGet]
-    public long Get(long inputone, long inputtwo)
-    {
-        var result = inputone + inputtwo;
-
-        //Kald HistoryService API post
-
-        return result;
-        //return historyCache.QueryFirstOrDefault<int>("SELECT output FROM historylogs WHERE inputone = @inputone", new { inputone = inputone });
-
-    }
-
     [HttpPost]
-    public void Post([FromQuery] long inputone, [FromQuery] long inputtwo)
+    public long Post([FromQuery] long inputone, [FromQuery] long inputtwo)
     {
-        var output = inputone + inputtwo;
-        //historyCache.Execute("REPLACE INTO historylogs (inputone, inputtwo, output) VALUES (@number, @divisors, @output)", new { inputone = inputone, inputtwo = inputtwo, output  = output });
+        //Lav beregning:
+        long output = inputone + inputtwo;
+
+        //Kald history service post:
+        var client = new HttpClient();
+        var baseAddress = "http://history-service/post/addition";
+        var uri = new Uri($"{baseAddress}?inputone={inputone}&inputtwo={inputtwo}&output={output}");
+        client.BaseAddress = uri;
+
+        var x = client.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri)).Result;
+        Console.WriteLine("TESTER ADDITION SERVICE - - - " + x.ToString());
+
+ 
+        return output;
     }
 }

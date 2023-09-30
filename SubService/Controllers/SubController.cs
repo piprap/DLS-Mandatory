@@ -10,10 +10,23 @@ namespace SubService.Controllers
     {
         private IDbConnection historyCache = new MySqlConnection("Server=history-db;Database=history-database;Uid=historydb;Pwd=C@ch3d1v;");
 
-        [HttpGet]
-        public long Get(long num1, long num2)
+        [HttpPost]
+        public long Post([FromQuery] long inputone, [FromQuery] long inputtwo)
         {
-            return num1 - num2;
+            //Lav beregning:
+            long output = inputone - inputtwo;
+
+            //Kald history service post:
+            var client = new HttpClient();
+            var baseAddress = "http://history-service/post/subtraction";
+            var uri = new Uri($"{baseAddress}?inputone={inputone}&inputtwo={inputtwo}&output={output}");
+            client.BaseAddress = uri;
+
+            var x = client.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri)).Result;
+            Console.WriteLine("TESTER ADDITION SERVICE - - - " + x.ToString());
+
+
+            return output;
         }
     }
 }
