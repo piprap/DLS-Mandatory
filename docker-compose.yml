@@ -17,6 +17,8 @@ services:
     build:
       context: .
       dockerfile: HistoryService/Dockerfile
+    depends_on:
+    - history-db
     ports:
     - 9002:80
   frontend-service:

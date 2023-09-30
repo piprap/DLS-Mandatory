@@ -2,10 +2,12 @@
 {
     public class History
     {
-        public string Operation { get; set; }
-     //   public DateTime Timestamp { get; set; }
-        public long Num1 { get; set; }
-        public long Num2 { get; set; }
-        public long Result { get; set; }
+        public int Id { get; set; }
+        
+        public DateTime timestamp { get; set; }
+        public long inputone { get; set; }
+        public long inputtwo { get; set; }
+        public long output { get; set; }
+        public string operation { get; set; }
     }
 }
