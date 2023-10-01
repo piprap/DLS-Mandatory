@@ -13,7 +13,8 @@ public class HistoryController : ControllerBase
 {
     private IDbConnection historyCache = new MySqlConnection("Server=history-db;Database=history-database;Uid=historydb;Pwd=C@ch3d1v;");
 
-    public HistoryController() {
+    public HistoryController()
+    {
         historyCache.Open();
         var tables = historyCache.Query<string>("SHOW TABLES LIKE 'historylogs'");
         if (!tables.Any())
@@ -26,22 +27,22 @@ public class HistoryController : ControllerBase
     [HttpGet("/get/addition")]
     public async Task<ActionResult<List<History>>> GetAdditions()
     {
-        
+
         var additionHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'addition'");
 
-        foreach (var item in additionHistory) 
-        { 
+        foreach (var item in additionHistory)
+        {
             Console.WriteLine("inputone: " + item.inputone + " - inputtwo: " + item.inputtwo + " - output: " + item.output);
-        
+
         }
 
         //var JsonConv =
-      //  new Response(additionHistory, 200);
+        //  new Response(additionHistory, 200);
         return Ok(additionHistory);
     }
 
     [HttpGet("/get/subtraction")]
-    public IEnumerable<History> GetSubtractions()
+    public IActionResult GetSubtractions()
     {
         var subtractionHistory = historyCache.Query<History>("SELECT * FROM historylogs WHERE operation = 'subtraction'");
 
@@ -51,14 +52,14 @@ public class HistoryController : ControllerBase
 
         }
 
-        return subtractionHistory;
+        return Ok(subtractionHistory);
     }
 
     [HttpPost("/post/addition")]
     public void SaveAddition([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
         historyCache.Execute("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'addition')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "addition" });
-        
+
     }
 
     [HttpPost("/post/subtraction")]
@@ -68,4 +69,3 @@ public class HistoryController : ControllerBase
     }
 
 }
-    
