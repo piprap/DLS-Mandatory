@@ -41,7 +41,7 @@ public class HistoryController : ControllerBase
     }
 
     [HttpGet("/get/subtraction")]
-    public IEnumerable<History> GetSubtractions()
+    public IActionResult GetSubtractions()
     {
         var subtractionHistory = historyCache.Query<History>("SELECT * FROM historylogs WHERE operation = 'subtraction'");
 
@@ -51,7 +51,7 @@ public class HistoryController : ControllerBase
 
         }
 
-        return subtractionHistory;
+        return Ok(subtractionHistory);
     }
 
     [HttpPost("/post/addition")]
