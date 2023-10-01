@@ -4,5 +4,35 @@
 
 <div class="text-center">
     <h1 class="display-4">Add two numbers.</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h3>Add</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="postAddition()">
+        <input type="number" id="inputone" placeholder="inputone">
+        <input type="number" id="inputtwo" placeholder="inputtwo">
+
+        <input type="submit" value="Add">
+    </form>
+    <p>Result: <span id="output"></span></p>
+    <p id="counter"></p>
 </div>
+
+<script defer>
+    const historyApiUri = "http://localhost:9002/get/addition/";
+    //const historyApiUri = "https://api.chucknorris.io/jokes/random";
+
+
+    async function getHistoryApi() {
+        const response = await fetch(historyApiUri, {
+            method: 'GET',
+        //    crossorigin: true,
+        //    mode: 'no-cors'
+        });
+        console.log(response);
+        console.log(response);
+        return response.json()
+    }
+
+    getHistoryApi().then(data => {
+        console.log(data)
+    })
+
+</script>

@@ -1,6 +1,7 @@
 using AddService.Models;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MySqlConnector;
 using System.Data;
 
@@ -23,10 +24,10 @@ public class HistoryController : ControllerBase
 
 
     [HttpGet("/get/addition")]
-    public IEnumerable<History> GetAdditions()
+    public async Task<ActionResult<List<History>>> GetAdditions()
     {
         
-        var additionHistory = historyCache.Query<History>("SELECT * FROM historylogs WHERE operation = 'addition'");
+        var additionHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'addition'");
 
         foreach (var item in additionHistory) 
         { 
@@ -34,8 +35,9 @@ public class HistoryController : ControllerBase
         
         }
 
-        return additionHistory;
-
+        //var JsonConv =
+      //  new Response(additionHistory, 200);
+        return Ok(additionHistory);
     }
 
     [HttpGet("/get/subtraction")]
