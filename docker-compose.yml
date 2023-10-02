@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+  seq:
+    image: datalust/seq
+    ports:
+    - 9004:80
+    volumes:
+    - rps_seq_data:/data
+    environment:
+    - ACCEPT_EULA=Y 
+  
+
   add-service:
     build:
       context: .
@@ -34,3 +44,7 @@ services:
       MYSQL_USER: "historydb"
       MYSQL_PASSWORD: "C@ch3d1v"
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+
+volumes:
+  rps_seq_data:
+   
