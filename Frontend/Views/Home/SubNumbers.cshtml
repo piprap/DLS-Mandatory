@@ -1,15 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Add Numbers";
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
 }
 
 <div class="text-center">
-    <h1 class="display-4">Add two numbers.</h1>
+    <h1 class="display-4">Subtract two numbers.</h1>
     <h3>Add</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="callPost()">
         <input type="number" id="inputone" placeholder="inputone">
         <input type="number" id="inputtwo" placeholder="inputtwo">
 
-        <input type="submit" value="Add">
+        <input type="submit" value="Subtract">
     </form>
     <p>Result: <span id="output"></span></p>
     <p id="counter"></p>
@@ -41,7 +43,7 @@
 
 </style>
 <script defer>
-    const historyApiUri = "http://localhost:9002/get/addition/";
+    const historyApiUri = "http://localhost:9002/get/subtraction/";
 
 
     async function getHistoryApi() {
@@ -74,22 +76,22 @@
         console.log("" + data)
     })
 
-    async function postAddition(){
+    async function postAddition() {
         var inputone = document.getElementById("inputone").value
         var inputtwo = document.getElementById("inputtwo").value
-        const additionApiUri = "http://localhost:9000/Add?inputone=" + inputone + "&inputtwo=" + inputtwo;
+        const additionApiUri = "http://localhost:9001/Sub?inputone=" + inputone + "&inputtwo=" + inputtwo;
         const response = await fetch(additionApiUri, {
             method: 'POST',
         })
         return response.json()
     }
-    
-    async function callPost(){
+
+    async function callPost() {
         postAddition().then(data => {
             document.querySelector("#output").innerHTML = data;//.json();
             console.log("DATA: " + data)
         })
     }
-   
+
 
 </script>

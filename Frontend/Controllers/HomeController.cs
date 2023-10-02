@@ -33,7 +33,7 @@ namespace Frontend.Controllers
             return View();
         }
 
-        public IActionResult SubtractNumbers()
+        public IActionResult SubNumbers()
         {
             return View();
         }
