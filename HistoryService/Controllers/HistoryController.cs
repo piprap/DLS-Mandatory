@@ -2,6 +2,7 @@ using AddService.Models;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Monitoring;
 using MySqlConnector;
 using System.Data;
 
@@ -27,6 +28,10 @@ public class HistoryController : ControllerBase
     [HttpGet("/get/addition")]
     public async Task<ActionResult<List<History>>> GetAdditions()
     {
+        //Tracing
+        using var activity = MonitorService.ActivitySource.StartActivity();
+        //Log
+        MonitorService.Log.Debug("Entered GetAdditions in HistoryController");
 
         var additionHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'addition'");
 
@@ -58,6 +63,11 @@ public class HistoryController : ControllerBase
     [HttpPost("/post/addition")]
     public void SaveAddition([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
+        //Tracing
+        using var activity = MonitorService.ActivitySource.StartActivity();
+        //Log
+        MonitorService.Log.Debug("Entered SaveAdditions in HistoryController");
+
         historyCache.Execute("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'addition')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "addition" });
 
     }
