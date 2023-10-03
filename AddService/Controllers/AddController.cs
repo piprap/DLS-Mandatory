@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using System.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Monitoring;
 
 namespace AddService.Controllers;
 
@@ -18,6 +19,8 @@ public class AddController : ControllerBase
     [HttpPost]
     public long Post([FromQuery] long inputone, [FromQuery] long inputtwo)
     {
+        //Log
+        MonitorService.Log.Debug($"Entered Post in AddController: Inputone: {inputone}, Inputtwo: {inputtwo}", inputone, inputtwo);
         //Lav beregning:
         long output = inputone + inputtwo;
 
@@ -28,9 +31,9 @@ public class AddController : ControllerBase
         client.BaseAddress = uri;
 
         var x = client.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri)).Result;
-        Console.WriteLine("TESTER ADDITION SERVICE - - - " + x.ToString());
+        //Log
+        MonitorService.Log.Debug("Exiting Post in AddController", output, x, x.ToString());
 
- 
         return output;
     }
 }
