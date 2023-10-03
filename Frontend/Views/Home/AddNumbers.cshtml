@@ -77,7 +77,7 @@
     async function postAddition(){
         var inputone = document.getElementById("inputone").value
         var inputtwo = document.getElementById("inputtwo").value
-        const additionApiUri = "http://localhost:9000/Add?inputone=" + inputone + "&inputtwo=" + inputtwo;
+        const additionApiUri = "http://localhost:9005/post/addition?inputone=" + inputone + "&inputtwo=" + inputtwo;
         const response = await fetch(additionApiUri, {
             method: 'POST',
         })

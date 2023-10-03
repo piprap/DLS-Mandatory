@@ -15,14 +15,14 @@ services:
     build:
       context: .
       dockerfile: AddService/Dockerfile
-    ports:
-    - 9000:80
+    deploy:
+      replicas: 3
   sub-service:
     build:
       context: .
       dockerfile: SubService/Dockerfile
-    ports:
-      - 9001:80
+    deploy:
+      replicas: 3
   history-service:
     build:
       context: .
@@ -44,7 +44,12 @@ services:
       MYSQL_USER: "historydb"
       MYSQL_PASSWORD: "C@ch3d1v"
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-
+  gateway-service:
+    build:
+      context: .
+      dockerfile: ApiGatewayService/Dockerfile
+    ports:
+    - 9005:80
 volumes:
   rps_seq_data:
    

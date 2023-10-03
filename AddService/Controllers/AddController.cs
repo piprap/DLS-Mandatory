@@ -20,7 +20,7 @@ public class AddController : ControllerBase
     public long Post([FromQuery] long inputone, [FromQuery] long inputtwo)
     {
         //Log
-        MonitorService.Log.Debug($"Entered Post in AddController: Inputone: {inputone}, Inputtwo: {inputtwo}", inputone, inputtwo);
+    //    MonitorService.Log.Debug($"Entered Post in AddController: Inputone: {inputone}, Inputtwo: {inputtwo}", inputone, inputtwo);
         //Lav beregning:
         long output = inputone + inputtwo;
         try
@@ -33,11 +33,11 @@ public class AddController : ControllerBase
 
             var x = client.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri)).Result;
             //Log
-            MonitorService.Log.Debug("Exiting Post in AddController", output, x, x.ToString());
+      //      MonitorService.Log.Debug("Exiting Post in AddController", output, x, x.ToString());
         }
         catch (Exception e)
         {
-            MonitorService.Log.Debug("Exiting Post in AddController - History service failed to save entry!");
+            //MonitorService.Log.Debug("Exiting Post in AddController - History service failed to save entry!");
 
         }
 
