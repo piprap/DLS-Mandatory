@@ -23,16 +23,24 @@ public class AddController : ControllerBase
         MonitorService.Log.Debug($"Entered Post in AddController: Inputone: {inputone}, Inputtwo: {inputtwo}", inputone, inputtwo);
         //Lav beregning:
         long output = inputone + inputtwo;
+        try
+        {
+             //Kald history service post:
+            var client = new HttpClient();
+            var baseAddress = "http://history-service/post/addition";
+            var uri = new Uri($"{baseAddress}?inputone={inputone}&inputtwo={inputtwo}&output={output}");
+            client.BaseAddress = uri;
 
-        //Kald history service post:
-        var client = new HttpClient();
-        var baseAddress = "http://history-service/post/addition";
-        var uri = new Uri($"{baseAddress}?inputone={inputone}&inputtwo={inputtwo}&output={output}");
-        client.BaseAddress = uri;
+            var x = client.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri)).Result;
+            //Log
+            MonitorService.Log.Debug("Exiting Post in AddController", output, x, x.ToString());
+        }
+        catch (Exception e)
+        {
+            MonitorService.Log.Debug("Exiting Post in AddController - History service failed to save entry!");
 
-        var x = client.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri)).Result;
-        //Log
-        MonitorService.Log.Debug("Exiting Post in AddController", output, x, x.ToString());
+        }
+
 
         return output;
     }
