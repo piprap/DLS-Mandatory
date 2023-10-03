@@ -10,8 +10,8 @@ public static class MonitorService
     {
             Serilog.Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
+            .Enrich.FromLogContext()
             .WriteTo.Console()
-            
             .WriteTo.Seq("http://seq-service:80")
             .CreateLogger();
     }
