@@ -17,12 +17,6 @@ public static class MonitorService
     public static ILogger Log => Serilog.Log.Logger;
     static MonitorService()
     {
-        //OpenTelemetry
-        TracerProvider = Sdk.CreateTracerProviderBuilder()
-        .AddSource(ActivitySource.Name)
-        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName))
-        .AddZipkinExporter()
-        .Build();
         //Log
         Serilog.Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
@@ -30,5 +24,25 @@ public static class MonitorService
             .WriteTo.Console()
             .WriteTo.Seq("http://seq-service:80")
             .CreateLogger();
+
+        //OpenTelemetry
+        try
+        {
+            TracerProvider = Sdk.CreateTracerProviderBuilder()
+            .AddSource(ActivitySource.Name)
+            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName))
+            .AddZipkinExporter(options =>
+            {
+                options.Endpoint = new Uri("http://zipkin-service:9411/api/v2/spans");
+            })
+            .SetSampler(new AlwaysOnSampler())
+            .Build();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Opentelemetry init failed: {ex}");
+        }
+      
     }
 }

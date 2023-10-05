@@ -20,6 +20,7 @@ services:
       dockerfile: AddService/Dockerfile
     deploy:
       replicas: 3
+
   sub-service:
     build:
       context: .

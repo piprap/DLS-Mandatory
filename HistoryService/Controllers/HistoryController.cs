@@ -41,22 +41,27 @@ public class HistoryController : ControllerBase
 
         }
 
-        //var JsonConv =
-        //  new Response(additionHistory, 200);
+        MonitorService.Log.Debug($"Exiting GetAdditions in HistoryController AdditionHistoryCount: {additionHistory.Count()}");
+
         return Ok(additionHistory);
     }
 
     [HttpGet("/get/subtraction")]
-    public IActionResult GetSubtractions()
+    public async Task<ActionResult<List<History>>> GetSubtractions()
     {
-        var subtractionHistory = historyCache.Query<History>("SELECT * FROM historylogs WHERE operation = 'subtraction'");
+        //Tracing
+        using var activity = MonitorService.ActivitySource.StartActivity();
+        //Log
+        MonitorService.Log.Debug("Entered GetSubtractions in HistoryController");
+
+        var subtractionHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'subtraction'");
 
         foreach (var item in subtractionHistory)
         {
             Console.WriteLine("inputone: " + item.inputone + " - inputtwo: " + item.inputtwo + " - output: " + item.output);
 
         }
-
+        MonitorService.Log.Debug($"Exiting GetSubtractions in HistoryController SubtractionHistoryCount: {subtractionHistory.Count()}");
         return Ok(subtractionHistory);
     }
 
@@ -68,14 +73,20 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered SaveAdditions in HistoryController");
 
-        historyCache.Execute("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'addition')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "addition" });
-
+        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'addition')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "addition" });
+        MonitorService.Log.Debug("Exiting SaveAdditions in HistoryController");
     }
 
     [HttpPost("/post/subtraction")]
     public void SaveSubtraction([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
-        historyCache.Execute("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'subtraction')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "subtraction" });
+        //Tracing
+        using var activity = MonitorService.ActivitySource.StartActivity();
+        //Log
+        MonitorService.Log.Debug("Entered SaveSubtraction in HistoryController");
+
+        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'subtraction')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "subtraction" });
+        MonitorService.Log.Debug("Exiting SaveSubtraction in HistoryController");
     }
 
 }

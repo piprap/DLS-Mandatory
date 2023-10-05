@@ -12,11 +12,6 @@ namespace AddService.Controllers;
 [Route("[controller]")]
 public class AddController : ControllerBase
 {
-
-    public AddController(){
-       
-    }
-
     [HttpPost]
     public long Post([FromQuery] long inputone, [FromQuery] long inputtwo)
     {
@@ -42,10 +37,7 @@ public class AddController : ControllerBase
         catch (Exception e)
         {
             MonitorService.Log.Debug("Exiting Post in AddController - History service failed to save entry!");
-
         }
-
-
         return output;
     }
 }
