@@ -6,7 +6,8 @@ pipeline{
 	stages{
 		stage("Build"){
 			steps{
-				sh "docker compose build"
+				echo "Build"
+				
 			}
 		}
 		stage("Prepare services"){
