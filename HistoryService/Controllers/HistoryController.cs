@@ -89,4 +89,35 @@ public class HistoryController : ControllerBase
         MonitorService.Log.Debug("Exiting SaveSubtraction in HistoryController");
     }
 
+    [HttpGet("/get/multiplication")]
+    public async Task<ActionResult<List<History>>> GetMultiplication()
+    {
+        //Tracing
+        using var activity = MonitorService.ActivitySource.StartActivity();
+        //Log
+        MonitorService.Log.Debug("Entered GetMultiplication in HistoryController");
+
+        var multiplicationHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'multiplication'"); 
+
+        foreach (var item in multiplicationHistory)
+        {
+            //Console.WriteLine("inputone: " + item.Inputone + " - inputtwo: " + item.Inputtwo + " - output: " + item.Output);
+            MonitorService.Log.Information(item.ToString());
+        }
+
+        MonitorService.Log.Debug($"Exiting GetMultiplication in HistoryController MultiplicationHistoryCount: {multiplicationHistory.Count()}");
+
+        return Ok(multiplicationHistory);
+    }
+    [HttpPost("/post/multiplication")]
+    public void SaveMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
+    {
+        //Tracing
+        using var activity = MonitorService.ActivitySource.StartActivity();
+        //Log
+        MonitorService.Log.Debug("Entered SaveMultiplication in HistoryController");
+
+        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
+        MonitorService.Log.Debug("Exiting SaveMultiplication in HistoryController");
+    }
 }

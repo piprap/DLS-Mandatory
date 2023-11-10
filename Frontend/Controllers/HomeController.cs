@@ -37,6 +37,10 @@ namespace Frontend.Controllers
         {
             return View();
         }
+        public IActionResult MultiplyNumbers()
+        {
+            return View();
+        }
 
         public IActionResult AddLog()
         {
@@ -44,6 +48,10 @@ namespace Frontend.Controllers
         }
 
         public IActionResult SubLog()
+        {
+            return View();
+        }
+        public IActionResult MultiplyLog()
         {
             return View();
         }

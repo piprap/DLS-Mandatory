@@ -19,14 +19,22 @@ services:
       context: .
       dockerfile: AddService/Dockerfile
     deploy:
-      replicas: 3
+      replicas: 2
 
   sub-service:
     build:
       context: .
       dockerfile: SubService/Dockerfile
     deploy:
-      replicas: 3
+      replicas: 2
+
+  multi-service:
+    build:
+      context: .
+      dockerfile: MultiplicationService/Dockerfile
+    deploy:
+      replicas: 2
+
   history-service:
     build:
       context: .

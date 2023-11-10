@@ -10,7 +10,8 @@
         public enum Operation
         {
             Addition,
-            Subtraction
+            Subtraction,
+            Multiplication
         };
         private Operation operation { get; set; }
         public override string ToString()

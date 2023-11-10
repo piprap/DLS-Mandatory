@@ -94,5 +94,46 @@ namespace ApiGatewayService.Controllers
             }
         }
 
+        [HttpPost("/post/multiplication")]
+        public long PostMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo)
+        {
+            using var activity = MonitorService.ActivitySource.StartActivity();
+            MonitorService.Log.Debug($"Entered PostMultiplication in ApiGatewayController");
+
+            //Kald history service post:
+            using (var client = new HttpClient())
+            {
+                var baseAddress = "http://multi-service/multiplication";
+                var uri = new Uri($"{baseAddress}?inputone={inputone}&inputtwo={inputtwo}");
+
+                var response = client.PostAsync(uri, null).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    if (long.TryParse(result, out long output))
+                    {
+                        // Console.WriteLine("output from response: " + output);
+                        MonitorService.Log.Information("output from response: " + output);
+                        return output;
+                    }
+                    else
+                    {
+                        MonitorService.Log.Error("Failed to parse response content as long.");
+                        // Console.WriteLine("Failed to parse response content as long.");
+                    }
+                }
+                else
+                {
+                    MonitorService.Log.Error($"API call failed with status code: {response.StatusCode}");
+                    // Console.WriteLine($"API call failed with status code: {response.StatusCode}");
+                }
+                MonitorService.Log.Debug($"Exiting PostMultiplication in ApiGatewayController");
+
+                // Return a default value or throw an exception based on your requirements.
+                return 0;
+            }
+        }
+
     }
 }
