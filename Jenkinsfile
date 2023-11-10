@@ -12,7 +12,7 @@ pipeline{
 		}
 		stage("Prepare services"){
 			steps{
-				echo "Prepare services
+				echo "Prepare services"
 			}
 		}
 		stage("Test"){
