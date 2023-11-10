@@ -4,20 +4,18 @@ pipeline{
 		pollSCM("* * * * *")
 	}
 	stages{
-		stage("Build"){
+		stage('Build'){
+			agent{
+				docker {image 'history-service'}
+			}
 			steps{
 				echo "Build"
-				sh "docker compose build"
+				
 			}
 		}
 		stage("Prepare services"){
 			steps{
-				sh "docker compose up add-service"
-				sh "docker compose up sub-service"
-				sh "docker compose up gateway-service"
-
-				sh "docker compose up history-service"
-				sh "docker compose up history-db"
+				echo "Prepare services"
 			}
 		}
 		stage("Test"){

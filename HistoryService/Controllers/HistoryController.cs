@@ -37,8 +37,8 @@ public class HistoryController : ControllerBase
 
         foreach (var item in additionHistory)
         {
-            Console.WriteLine("inputone: " + item.inputone + " - inputtwo: " + item.inputtwo + " - output: " + item.output);
-
+            //Console.WriteLine("inputone: " + item.Inputone + " - inputtwo: " + item.Inputtwo + " - output: " + item.Output);
+            MonitorService.Log.Information(item.ToString());
         }
 
         MonitorService.Log.Debug($"Exiting GetAdditions in HistoryController AdditionHistoryCount: {additionHistory.Count()}");
@@ -58,8 +58,8 @@ public class HistoryController : ControllerBase
 
         foreach (var item in subtractionHistory)
         {
-            Console.WriteLine("inputone: " + item.inputone + " - inputtwo: " + item.inputtwo + " - output: " + item.output);
-
+            //Console.WriteLine("inputone: " + item.Inputone + " - inputtwo: " + item.inputtwo + " - output: " + item.output);
+            MonitorService.Log.Information(item.ToString());
         }
         MonitorService.Log.Debug($"Exiting GetSubtractions in HistoryController SubtractionHistoryCount: {subtractionHistory.Count()}");
         return Ok(subtractionHistory);

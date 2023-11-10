@@ -33,19 +33,20 @@ namespace ApiGatewayService.Controllers
                     var result = response.Content.ReadAsStringAsync().Result;
                     if (long.TryParse(result, out long output))
                     {
-                        Console.WriteLine("output from response: " + output);
+                       // Console.WriteLine("output from response: " + output);
+                        MonitorService.Log.Information("output from response: " + output);
                         return output;
                     }
                     else
                     {
                         MonitorService.Log.Error("Failed to parse response content as long.");
-                        Console.WriteLine("Failed to parse response content as long.");
+                       // Console.WriteLine("Failed to parse response content as long.");
                     }
                 }
                 else
                 {
                     MonitorService.Log.Error($"API call failed with status code: {response.StatusCode}");
-                    Console.WriteLine($"API call failed with status code: {response.StatusCode}");
+                   // Console.WriteLine($"API call failed with status code: {response.StatusCode}");
                 }
                 MonitorService.Log.Debug($"Exiting PostAddition in ApiGatewayController");
 
@@ -72,19 +73,20 @@ namespace ApiGatewayService.Controllers
                     var result = response.Content.ReadAsStringAsync().Result;
                     if (long.TryParse(result, out long output))
                     {
-                        Console.WriteLine("output from response: " + output);
+                        MonitorService.Log.Information("output from response: " + output);
+                        //Console.WriteLine("output from response: " + output);
                         return output;
                     }
                     else
                     {
                         MonitorService.Log.Error("Failed to parse response content as long.");
-                        Console.WriteLine("Failed to parse response content as long.");
+                        //Console.WriteLine("Failed to parse response content as long.");
                     }
                 }
                 else
                 {
                     MonitorService.Log.Error($"API call failed with status code: {response.StatusCode}");
-                    Console.WriteLine($"API call failed with status code: {response.StatusCode}");
+                    //Console.WriteLine($"API call failed with status code: {response.StatusCode}");
                 }
                 MonitorService.Log.Debug($"Exiting PostSubtraction in ApiGatewayController");
                 // Return a default value or throw an exception based on your requirements.
