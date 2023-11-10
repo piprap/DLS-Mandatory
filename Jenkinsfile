@@ -5,17 +5,14 @@ pipeline{
 	}
 	stages{
 		stage('Build'){
-			agent{
-				docker {image 'history-service'}
-			}
 			steps{
 				echo "Build"
-				
+				sh 'history-service'
 			}
 		}
 		stage("Prepare services"){
 			steps{
-				echo "Prepare services"
+				echo "Prepare services
 			}
 		}
 		stage("Test"){
