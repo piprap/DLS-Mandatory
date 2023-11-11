@@ -17,7 +17,7 @@
         public override string ToString()
         {
             return 
-                "Id: "+Id+
+                "-Id: "+Id+
                 ", Timestamp: " + Timestamp+
                 ", Inputone: " + Inputone+
                 ", Inputtwo: " + Inputtwo +
