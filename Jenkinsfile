@@ -7,16 +7,14 @@ pipeline{
 		stage('Build'){
 			steps{
 				echo "Build"
-				sh 'dotnet build HistoryService.csproj'
+				sh 'docker compose build'
 			}
 		}
 		stage("Prepare services"){
 			steps{
 				echo "Prepare services"
-				// Start a Docker container here
-                script {
-                    docker.image('history-service:tag').run('-d -p 9002:80') // Modify the image name and port as needed
-                }
+				sh 'docker compose up add-service'
+				
 			}
 		}
 		stage("Test"){
