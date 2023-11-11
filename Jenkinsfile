@@ -14,7 +14,7 @@ pipeline{
 			steps{
 				echo "Prepare services echo"
 				echo "Starting add-service echo"
-				sh 'docker compose up -d add-service'
+				sh 'docker compose up -d'
 				echo "add-service up and running echo"
 			}
 		}
