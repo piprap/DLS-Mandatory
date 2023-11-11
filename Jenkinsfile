@@ -21,8 +21,10 @@ pipeline{
 		stage("Test"){
 			steps{
 				echo "Running Newman tests echo"
-				sh 'docker run -t -v ${PWD}:/Postman postman/newman ls /Postman'
-				sh 'docker run -t -v ${PWD}:/Postman postman/newman run /Postman/DLSMandatory3.postman_collection.json'
+				echo "Installing Newman..."
+				sh 'npm install -g newman'
+				echo "Running Newman tests..."
+				sh 'newman run /Postman/DLSMandatory3.postman_collection.json'
 			}
 		}
 		stage("Deliver"){
