@@ -44,7 +44,7 @@ pipeline{
 						for (service in services) {
 							def imageTag = "${DOCKER_REPO_PREFIX}:${service}"
 							sh "docker tag compulsory3-${service} ${imageTag}"
-							sh "docker push ${imageTag}"
+							sh "docker push compulsory3-${imageTag}"
 						}
 					}
 				}
