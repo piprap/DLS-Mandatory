@@ -3,6 +3,10 @@ pipeline{
 	triggers{
 		pollSCM("* * * * *")
 	}
+	    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('DockerHub')
+        DOCKER_REPO_PREFIX = 'longhairy/calc-service'
+    }
 	stages{
 		stage('Build'){
 			steps{
