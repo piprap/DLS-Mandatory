@@ -13,7 +13,12 @@ pipeline{
 		stage("Prepare services"){
 			steps{
 				echo "Prepare services"
+				echo "Starting add-service"
 				sh 'docker compose up add-service'
+				echo "add-service up and running"
+				echo "Starting sub-service"
+				sh 'docker compose up sub-service'
+				echo "sub-service up and running"
 				
 			}
 		}
