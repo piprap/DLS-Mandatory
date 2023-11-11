@@ -34,8 +34,12 @@ pipeline{
 				withCredentials([usernamePassword(credentialsId: 'DockerHub' , usernameVariable: 'USERNAME', passwordVariable:'PASSWORD')]){
 					sh 'docker login -u $USERNAME -p $PASSWORD'
 					sh 'docker image list'
-					sh 'docker push longhairy/calc-service:compulsory3-add-service'
+					sh 'docker tag compulsory3-sub-service longhairy/calc-service:compulsory3-sub-service'
 					sh 'docker push longhairy/calc-service:compulsory3-sub-service'
+					
+					sh 'docker tag compulsory3-add-service longhairy/calc-service:compulsory3-add-service'
+					sh 'docker push longhairy/calc-service:compulsory3-add-service'
+					
 				}
 			}
 		}
