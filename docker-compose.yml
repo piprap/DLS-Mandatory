@@ -18,8 +18,7 @@ services:
     build:
       context: .
       dockerfile: AddService/Dockerfile
-    deploy:
-      replicas: 2
+
 
   sub-service:
     build:
