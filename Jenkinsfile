@@ -33,6 +33,7 @@ pipeline{
 			steps{
 				withCredentials([usernamePassword(credentialsId: 'DockerHub' , usernameVariable: 'USERNAME', passwordVariable:'PASSWORD')]){
 					sh 'docker login -u $USERNAME -p $PASSWORD'
+					sh 'docker image list'
 					sh 'docker compose push add-service'
 
 				}
