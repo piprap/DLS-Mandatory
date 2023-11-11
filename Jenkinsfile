@@ -35,6 +35,7 @@ pipeline{
 					sh 'docker login -u $USERNAME -p $PASSWORD'
 					sh 'docker image list'
 					sh 'docker push longhairy/calc-service:compulsory3-add-service'
+					sh 'docker push longhairy/calc-service:compulsory3-sub-service'
 				}
 			}
 		}
