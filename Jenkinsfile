@@ -26,7 +26,7 @@ pipeline{
 				echo "Running Newman tests..."
 				sh 'pwd'
 				sh 'ls'
-				sh 'newman run /Postman/DLSMandatory3.postman_collection.json'
+				sh 'newman run /c/Users/londo/.jenkins/workspace/Compulsory3/Postman/DLSMandatory3.postman_collection.json'
 			}
 		}
 		stage("Deliver"){
