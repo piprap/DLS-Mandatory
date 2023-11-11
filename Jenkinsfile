@@ -34,17 +34,15 @@ pipeline{
 				withCredentials([usernamePassword(credentialsId: 'DockerHub' , usernameVariable: 'USERNAME', passwordVariable:'PASSWORD')]){
 					sh 'docker login -u $USERNAME -p $PASSWORD'
 					sh 'docker image list'
-					
-					services = ["add-service", "sub-service", "multi-service", "history-service", "frontend-service", "gateway-service"]
+					script{
+						services = ["add-service", "sub-service", "multi-service", "history-service", "frontend-service", "gateway-service"]
 
-					for (service in services) {
-						def imageTag = "${DOCKER_REPO_PREFIX}:${service}"
-						sh "docker tag compulsory3-${service} ${imageTag}"
-						sh "docker push ${imageTag}"
+						for (service in services) {
+							def imageTag = "${DOCKER_REPO_PREFIX}:${service}"
+							sh "docker tag compulsory3-${service} ${imageTag}"
+							sh "docker push ${imageTag}"
+						}
 					}
-					
-
-					
 				}
 			}
 		}
