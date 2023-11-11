@@ -24,6 +24,7 @@ pipeline{
 				echo "Installing Newman..."
 				sh 'npm install -g newman'
 				echo "Running Newman tests..."
+				sh 'pwd'
 				sh 'ls'
 				sh 'newman run /Postman/DLSMandatory3.postman_collection.json'
 			}
