@@ -16,12 +16,12 @@ pipeline{
 				echo "Starting add-service echo"
 				sh 'docker compose up -d add-service'
 				echo "add-service up and running echo"
-				
 			}
 		}
 		stage("Test"){
 			steps{
-				echo "Test not yet implemented echo"
+				echo "Running Newman tests echo"
+                sh 'docker run -t postman/newman run /Postman/DLSMandatory3.postman_collection.json'
 			}
 		}
 		stage("Deliver"){
