@@ -3,10 +3,6 @@ pipeline{
 	triggers{
 		pollSCM("* * * * *")
 	}
-	    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('DockerHub')
-        DOCKER_REPO_PREFIX = 'longhairy/calc-service'
-    }
 	stages{
 		stage('Build'){
 			steps{
@@ -38,15 +34,28 @@ pipeline{
 				withCredentials([usernamePassword(credentialsId: 'DockerHub' , usernameVariable: 'USERNAME', passwordVariable:'PASSWORD')]){
 					sh 'docker login -u $USERNAME -p $PASSWORD'
 					sh 'docker image list'
-					script{
-						services = ["add-service", "sub-service", "multi-service", "history-service", "frontend-service", "gateway-service"]
+					
+					sh 'docker tag compulsory3-add-service longhairy/calc-service:compulsory3-add-service'
+					sh 'docker push longhairy/calc-service:compulsory3-add-service'
+					
+					sh 'docker tag compulsory3-sub-service longhairy/calc-service:compulsory3-sub-service'
+					sh 'docker push longhairy/calc-service:compulsory3-sub-service'
+					
+					sh 'docker tag compulsory3-multi-service longhairy/calc-service:compulsory3-multi-service'
+					sh 'docker push longhairy/calc-service:compulsory3-multi-service'
+					
+					sh 'docker tag compulsory3-history-service longhairy/calc-service:compulsory3-history-service'
+					sh 'docker push longhairy/calc-service:compulsory3-history-service'
+					
+					sh 'docker tag compulsory3-frontend-service longhairy/calc-service:compulsory3-frontend-service'
+					sh 'docker push longhairy/calc-service:compulsory3-frontend-service'
+					
+					sh 'docker tag compulsory3-gateway-service longhairy/calc-service:compulsory3-gateway-service'
+					sh 'docker push longhairy/calc-service:compulsory3-gateway-service'
+					
+					
 
-						for (service in services) {
-							def imageTag = "${DOCKER_REPO_PREFIX}:${service}"
-							sh "docker tag compulsory3-${service} ${imageTag}"
-							sh "docker push compulsory3-${imageTag}"
-						}
-					}
+					
 				}
 			}
 		}
