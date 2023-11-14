@@ -137,5 +137,6 @@ public class HistoryController : ControllerBase
 
         multiHistoryCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
         MonitorService.Log.Debug("Exiting SaveMultiplication in HistoryController");
+
     }
 }
