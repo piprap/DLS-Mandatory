@@ -29,6 +29,10 @@ pipeline{
 				sh 'newman run /c/Users/londo/.jenkins/workspace/Compulsory3/Postman/DLSMandatory3.postman_collection.json'
 			}
 		}
+		stage("test cleanup"){
+			sh 'docker compose down'
+		}
+		
 		stage("Deliver"){
 			steps{
 				withCredentials([usernamePassword(credentialsId: 'DockerHub' , usernameVariable: 'USERNAME', passwordVariable:'PASSWORD')]){
@@ -53,11 +57,12 @@ pipeline{
 					sh 'docker tag compulsory3-gateway-service longhairy/calc-service:compulsory3-gateway-service'
 					sh 'docker push longhairy/calc-service:compulsory3-gateway-service'
 					
-					
-
-					
 				}
 			}
 		}
+		stage("Deploy"){
+			sh 'docker compose up'
+		}
+		
 	}
 }

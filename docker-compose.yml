@@ -13,6 +13,14 @@ services:
     image: openzipkin/zipkin
     ports:
     - 9411:9411
+  featurehub-service:
+    image: featurehub/party-server:latest
+    restart: always
+    volumes:
+    - featurehub-h2-data:/db
+    ports:
+    - 8085:8085
+  
 
   add-service:
     build:
@@ -77,4 +85,5 @@ services:
     - 9005:80
 volumes:
   rps_seq_data:
+  featurehub-h2-data:
    
