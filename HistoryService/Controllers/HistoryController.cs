@@ -50,7 +50,6 @@ public class HistoryController : ControllerBase
         using var activity = MonitorService.ActivitySource.StartActivity();
         //Log
         MonitorService.Log.Debug("Entered GetAdditions in HistoryController");
-        Console.WriteLine("Entered GetAdditions: serverstate: "+addHistoryCache.State.ToString());
 
         var additionHistory = await addHistoryCache.QueryAsync<History>("SELECT * FROM historylogs");//WHERE operation = 'addition' removed
 
