@@ -12,15 +12,33 @@ namespace HistoryService.Controllers;
 [Route("[controller]")]
 public class HistoryController : ControllerBase
 {
-    private IDbConnection historyCache = new MySqlConnection("Server=history-db;Database=history-database;Uid=historydb;Pwd=C@ch3d1v;");
+    private IDbConnection addHistoryCache = new MySqlConnection("Server=add-history-db;Database=add-history-database;Uid=historydb;Pwd=C@ch3d1v;");
+    private IDbConnection subHistoryCache = new MySqlConnection("Server=sub-history-db;Database=sub-history-database;Uid=historydb;Pwd=C@ch3d1v;");
+    private IDbConnection multiHistoryCache = new MySqlConnection("Server=multi-history-db;Database=multi-history-database;Uid=historydb;Pwd=C@ch3d1v;");
 
     public HistoryController()
     {
-        historyCache.Open();
-        var tables = historyCache.Query<string>("SHOW TABLES LIKE 'historylogs'");
-        if (!tables.Any())
+        //initialize db
+        //add db
+        addHistoryCache.Open();
+        var addtables = addHistoryCache.Query<string>("SHOW TABLES LIKE 'historylogs'");
+        if (!addtables.Any())
         {
-            historyCache.Execute("CREATE TABLE historylogs (id INT NOT NULL AUTO_INCREMENT,timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, inputone INT NOT NULL, inputtwo INT NOT NULL, output INT NOT NULL, operation VARCHAR(50) NOT NULL, PRIMARY KEY (id))");
+            addHistoryCache.Execute("CREATE TABLE historylogs (id INT NOT NULL AUTO_INCREMENT,timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, inputone INT NOT NULL, inputtwo INT NOT NULL, output INT NOT NULL, operation VARCHAR(50) NOT NULL, PRIMARY KEY (id))");
+        }
+        //sub db
+        subHistoryCache.Open();
+        var subtables = subHistoryCache.Query<string>("SHOW TABLES LIKE 'historylogs'");
+        if (!subtables.Any())
+        {
+            subHistoryCache.Execute("CREATE TABLE historylogs (id INT NOT NULL AUTO_INCREMENT,timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, inputone INT NOT NULL, inputtwo INT NOT NULL, output INT NOT NULL, operation VARCHAR(50) NOT NULL, PRIMARY KEY (id))");
+        }
+        //multi db
+        multiHistoryCache.Open();
+        var multitables = multiHistoryCache.Query<string>("SHOW TABLES LIKE 'historylogs'");
+        if (!multitables.Any())
+        {
+            multiHistoryCache.Execute("CREATE TABLE historylogs (id INT NOT NULL AUTO_INCREMENT,timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, inputone INT NOT NULL, inputtwo INT NOT NULL, output INT NOT NULL, operation VARCHAR(50) NOT NULL, PRIMARY KEY (id))");
         }
     }
 
@@ -33,7 +51,7 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered GetAdditions in HistoryController");
 
-        var additionHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'addition'");
+        var additionHistory = await addHistoryCache.QueryAsync<History>("SELECT * FROM historylogs");//WHERE operation = 'addition' removed
 
         foreach (var item in additionHistory)
         {
@@ -54,7 +72,7 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered GetSubtractions in HistoryController");
 
-        var subtractionHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'subtraction'");
+        var subtractionHistory = await subHistoryCache.QueryAsync<History>("SELECT * FROM historylogs");//WHERE operation = 'subtraction'
 
         foreach (var item in subtractionHistory)
         {
@@ -73,7 +91,7 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered SaveAdditions in HistoryController");
 
-        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'addition')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "addition" });
+        addHistoryCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'addition')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "addition" });
         MonitorService.Log.Debug("Exiting SaveAdditions in HistoryController");
     }
 
@@ -85,7 +103,7 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered SaveSubtraction in HistoryController");
 
-        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'subtraction')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "subtraction" });
+        subHistoryCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'subtraction')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "subtraction" });
         MonitorService.Log.Debug("Exiting SaveSubtraction in HistoryController");
     }
 
@@ -97,7 +115,7 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered GetMultiplication in HistoryController");
 
-        var multiplicationHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs WHERE operation = 'multiplication'"); 
+        var multiplicationHistory = await multiHistoryCache.QueryAsync<History>("SELECT * FROM historylogs"); // WHERE operation = 'multiplication'
 
         foreach (var item in multiplicationHistory)
         {
@@ -117,7 +135,7 @@ public class HistoryController : ControllerBase
         //Log
         MonitorService.Log.Debug("Entered SaveMultiplication in HistoryController");
 
-        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
+        multiHistoryCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
         MonitorService.Log.Debug("Exiting SaveMultiplication in HistoryController");
     }
 }

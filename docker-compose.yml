@@ -49,10 +49,24 @@ services:
       dockerfile: Frontend/Dockerfile
     ports:
     - 9003:80
-  history-db:
+  add-history-db:
     image: "mysql"
     environment:
-      MYSQL_DATABASE: "history-database"
+      MYSQL_DATABASE: "add-history-database"
+      MYSQL_USER: "historydb"
+      MYSQL_PASSWORD: "C@ch3d1v"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  sub-history-db:
+    image: "mysql"
+    environment:
+      MYSQL_DATABASE: "sub-history-database"
+      MYSQL_USER: "historydb"
+      MYSQL_PASSWORD: "C@ch3d1v"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  multi-history-db:
+    image: "mysql"
+    environment:
+      MYSQL_DATABASE: "multi-history-database"
       MYSQL_USER: "historydb"
       MYSQL_PASSWORD: "C@ch3d1v"
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
