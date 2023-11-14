@@ -30,7 +30,10 @@ pipeline{
 			}
 		}
 		stage("test cleanup"){
-			sh 'docker compose down'
+			steps{
+				sh 'docker compose down'
+			}
+			
 		}
 		
 		stage("Deliver"){
@@ -61,7 +64,10 @@ pipeline{
 			}
 		}
 		stage("Deploy"){
-			sh 'docker compose up'
+			steps{
+				sh 'docker compose up'
+			}
+			
 		}
 		
 	}
