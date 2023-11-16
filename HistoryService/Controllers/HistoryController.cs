@@ -140,8 +140,11 @@ public class HistoryController : ControllerBase
     [HttpGet("/get/multiplication")]
     public async Task<ActionResult<List<History>>> GetMultiplication()
     {
-        if (FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
-        {
+            if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+            {
+                MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
+                return NoContent();
+            }
             //Tracing
             using var activity = MonitorService.ActivitySource.StartActivity();
             //Log
@@ -158,19 +161,18 @@ public class HistoryController : ControllerBase
             MonitorService.Log.Debug($"Exiting GetMultiplication in HistoryController MultiplicationHistoryCount: {multiplicationHistory.Count()}");
 
             return Ok(multiplicationHistory); 
-        }
-        else
-        {
-            MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
-            return BadRequest();
-        }
+        
+ 
        
     }
     [HttpPost("/post/multiplication")]
     public void SaveMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
-        if (FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
-        {
+            if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+            {
+                MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
+                
+            }
             //Tracing
             using var activity = MonitorService.ActivitySource.StartActivity();
             //Log
@@ -179,11 +181,6 @@ public class HistoryController : ControllerBase
             historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
             MonitorService.Log.Debug("Exiting SaveMultiplication in HistoryController");
 
-        }
-        else
-        {
-            MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
-        }
-
+    
     }
 }

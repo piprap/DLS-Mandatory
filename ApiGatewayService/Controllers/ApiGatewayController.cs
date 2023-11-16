@@ -97,8 +97,11 @@ namespace ApiGatewayService.Controllers
         [HttpPost("/post/multiplication")]
         public long PostMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo)
         {
-            if (FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+            if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
             {
+                NoContent();
+                return 0;
+            }
 
                 using var activity = MonitorService.ActivitySource.StartActivity();
                 MonitorService.Log.Debug($"Entered PostMultiplication in ApiGatewayController");
@@ -137,13 +140,8 @@ namespace ApiGatewayService.Controllers
                     return 0;
                 }
             }
-            else
-            {
-                BadRequest();
-                return 0;
-            }
+        
 
         }
 
     }
-}
