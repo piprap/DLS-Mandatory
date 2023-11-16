@@ -100,7 +100,6 @@ namespace ApiGatewayService.Controllers
             if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
             {
                 NoContent();
-                return 0;
             }
 
                 using var activity = MonitorService.ActivitySource.StartActivity();
