@@ -4,7 +4,6 @@ using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Enrichers.Span;
 using System.Diagnostics;
-using System.Net.NetworkInformation;
 using System.Reflection;
 
 namespace Monitoring;
@@ -13,7 +12,7 @@ public static class MonitorService
 {
     public static readonly string ServiceName = Assembly.GetCallingAssembly().GetName().Name ?? "unknown";
     public static TracerProvider TracerProvider;
-    public static ActivitySource ActivitySource = new ActivitySource(ServiceName);
+    public static ActivitySource ActivitySource = new(ServiceName);
     public static ILogger Log => Serilog.Log.Logger;
     static MonitorService()
     {

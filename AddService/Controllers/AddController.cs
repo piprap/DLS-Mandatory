@@ -37,6 +37,7 @@ public class AddController : ControllerBase
         catch (Exception e)
         {
             MonitorService.Log.Debug("Exiting Post in AddController - History service failed to save entry!");
+            MonitorService.Log.Debug(e.Message);
         }
         return output;
     }

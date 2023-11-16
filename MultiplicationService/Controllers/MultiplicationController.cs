@@ -37,6 +37,7 @@ public class MultiplicationController : ControllerBase
         catch (Exception e)
         {
             MonitorService.Log.Debug("Exiting Post in MultiplicationController - History service failed to save entry!");
+            MonitorService.Log.Debug(e.Message);
         }
         return output;
     }
