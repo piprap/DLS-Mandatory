@@ -140,6 +140,10 @@ public class HistoryController : ControllerBase
     [HttpGet("/get/multiplication")]
     public async Task<ActionResult<List<History>>> GetMultiplication()
     {
+        if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+        {
+            throw new NotImplementedException();
+        }
         //Tracing
         using var activity = MonitorService.ActivitySource.StartActivity();
         //Log
@@ -160,6 +164,10 @@ public class HistoryController : ControllerBase
     [HttpPost("/post/multiplication")]
     public void SaveMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
+        if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+        {
+            throw new NotImplementedException();
+        }
         //Tracing
         using var activity = MonitorService.ActivitySource.StartActivity();
         //Log
