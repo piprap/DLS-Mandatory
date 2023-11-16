@@ -143,7 +143,7 @@ public class HistoryController : ControllerBase
             if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
             {
                 MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
-                return NoContent();
+               
             }
             //Tracing
             using var activity = MonitorService.ActivitySource.StartActivity();
