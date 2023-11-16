@@ -140,41 +140,50 @@ public class HistoryController : ControllerBase
     [HttpGet("/get/multiplication")]
     public async Task<ActionResult<List<History>>> GetMultiplication()
     {
-        if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+        if (FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
         {
-            throw new NotImplementedException();
-        }
-        //Tracing
-        using var activity = MonitorService.ActivitySource.StartActivity();
-        //Log
-        MonitorService.Log.Debug("Entered GetMultiplication in HistoryController");
-        historyCache = new MySqlConnection(multiConnectionString);
-        var multiplicationHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs"); // WHERE operation = 'multiplication'
+            //Tracing
+            using var activity = MonitorService.ActivitySource.StartActivity();
+            //Log
+            MonitorService.Log.Debug("Entered GetMultiplication in HistoryController");
+            historyCache = new MySqlConnection(multiConnectionString);
+            var multiplicationHistory = await historyCache.QueryAsync<History>("SELECT * FROM historylogs"); // WHERE operation = 'multiplication'
 
-        foreach (var item in multiplicationHistory)
+            foreach (var item in multiplicationHistory)
+            {
+                //Console.WriteLine("inputone: " + item.Inputone + " - inputtwo: " + item.Inputtwo + " - output: " + item.Output);
+                MonitorService.Log.Information(item.ToString());
+            }
+
+            MonitorService.Log.Debug($"Exiting GetMultiplication in HistoryController MultiplicationHistoryCount: {multiplicationHistory.Count()}");
+
+            return Ok(multiplicationHistory); 
+        }
+        else
         {
-            //Console.WriteLine("inputone: " + item.Inputone + " - inputtwo: " + item.Inputtwo + " - output: " + item.Output);
-            MonitorService.Log.Information(item.ToString());
+            MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
+            return BadRequest();
         }
-
-        MonitorService.Log.Debug($"Exiting GetMultiplication in HistoryController MultiplicationHistoryCount: {multiplicationHistory.Count()}");
-
-        return Ok(multiplicationHistory);
+       
     }
     [HttpPost("/post/multiplication")]
     public void SaveMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
-        if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+        if (FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
         {
-            throw new NotImplementedException();
+            //Tracing
+            using var activity = MonitorService.ActivitySource.StartActivity();
+            //Log
+            MonitorService.Log.Debug("Entered SaveMultiplication in HistoryController");
+            historyCache = new MySqlConnection(multiConnectionString);
+            historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
+            MonitorService.Log.Debug("Exiting SaveMultiplication in HistoryController");
+
         }
-        //Tracing
-        using var activity = MonitorService.ActivitySource.StartActivity();
-        //Log
-        MonitorService.Log.Debug("Entered SaveMultiplication in HistoryController");
-        historyCache = new MySqlConnection(multiConnectionString);
-        historyCache.ExecuteAsync("REPLACE INTO historylogs (inputone, inputtwo, output, operation) VALUES (@inputone, @inputtwo, @output, 'multiplication')", new { inputone = inputone, inputtwo = inputtwo, output = output, operation = "multiplication" });
-        MonitorService.Log.Debug("Exiting SaveMultiplication in HistoryController");
+        else
+        {
+            MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
+        }
 
     }
 }
