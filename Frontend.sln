@@ -20,9 +20,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{76FFF170-8F89-498D-A28B-93065FB62FA4}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureHub", "FeatureHub\FeatureHub.csproj", "{1B468C05-DCDF-4AD6-B841-B019637F3B16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureHub", "FeatureHub\FeatureHub.csproj", "{1B468C05-DCDF-4AD6-B841-B019637F3B16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
