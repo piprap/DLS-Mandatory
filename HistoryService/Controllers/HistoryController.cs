@@ -142,7 +142,7 @@ public class HistoryController : ControllerBase
     {
             if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
             {
-                MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
+                MonitorService.Log.Information("GetMultiplication service FeatureFlag is disabled");
                 return Ok();
             }
             //Tracing
@@ -170,7 +170,7 @@ public class HistoryController : ControllerBase
     {
             if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
             {
-                MonitorService.Log.Information("Multiplication service FeatureFlag is disabled");
+                MonitorService.Log.Information("SaveMultiplication service FeatureFlag is disabled");
             }
             //Tracing
             using var activity = MonitorService.ActivitySource.StartActivity();
