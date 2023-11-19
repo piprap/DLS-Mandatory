@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Monitoring;
 using MySqlConnector;
 using System.Data;
+//using FeatureHub;
 
 namespace HistoryService.Controllers;
 
@@ -140,11 +141,11 @@ public class HistoryController : ControllerBase
     [HttpGet("/get/multiplication")]
     public async Task<ActionResult<List<History>>> GetMultiplication()
     {
-            if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
-            {
-                MonitorService.Log.Information("GetMultiplication service FeatureFlag is disabled");
-                return Ok();
-            }
+            //if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+            //{
+            //    MonitorService.Log.Information("GetMultiplication service FeatureFlag is disabled");
+            //    return Ok();
+            //}
             //Tracing
             using var activity = MonitorService.ActivitySource.StartActivity();
             //Log
@@ -168,10 +169,10 @@ public class HistoryController : ControllerBase
     [HttpPost("/post/multiplication")]
     public void SaveMultiplication([FromQuery] long inputone, [FromQuery] long inputtwo, [FromQuery] long output)
     {
-            if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
-            {
-                MonitorService.Log.Information("SaveMultiplication service FeatureFlag is disabled");
-            }
+            //if (!FeatureHub.FeatureFlag.MultiplicationFeatureIsEnabled)
+            //{
+            //    MonitorService.Log.Information("SaveMultiplication service FeatureFlag is disabled");
+            //}
             //Tracing
             using var activity = MonitorService.ActivitySource.StartActivity();
             //Log
