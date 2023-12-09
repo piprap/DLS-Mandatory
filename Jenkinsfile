@@ -22,7 +22,7 @@ pipeline{
 			steps{
 				echo "Running Newman tests echo"
 				echo "Installing Newman..."
-				sh 'npm install -g newman'
+				sh 'npm install newman'
 				echo "Running Newman tests..."
 				sh 'pwd'
 				sh 'ls'
