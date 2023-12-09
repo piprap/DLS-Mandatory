@@ -26,7 +26,7 @@ pipeline{
 				echo "Running Newman tests..."
 				sh 'pwd'
 				sh 'ls'
-				sh 'newman run /c/Users/emil-/.jenkins/workspace/Compulsory3/Postman/DLSMandatory3.postman_collection.json'
+				sh 'newman run /c/Users/emil/.jenkins/workspace/Compulsory3/Postman/DLSMandatory3.postman_collection.json'
 			}
 		}
 		stage("test cleanup"){
@@ -56,7 +56,7 @@ pipeline{
 					
 					sh 'docker tag compulsory3-frontend-service longhairy/calc-service:compulsory3-frontend-service'
 					sh 'docker push longhairy/calc-service:compulsory3-frontend-service'
-					 
+					
 					sh 'docker tag compulsory3-gateway-service longhairy/calc-service:compulsory3-gateway-service'
 					sh 'docker push longhairy/calc-service:compulsory3-gateway-service'
 					
